@@ -24,6 +24,12 @@ var botal;
 
 var piscando;
 var comendo;
+var triste;
+
+var thau, tek, mimi, nhenhe, suuu;
+var balu;
+var muty;
+
 
 
 function preload(){
@@ -32,16 +38,27 @@ function preload(){
   tobi = loadImage("Rabbit-01.png");
   piscando = loadAnimation("blink_1.png","blink_2.png","blink_3.png");
   comendo = loadAnimation("eat_0.png","eat_1.png","eat_2.png","eat_3.png","eat_4.png");
+  triste = loadAnimation("sad_1.png","sad_2.png","sad_3.png");
+
+  thau = loadSound("sound1.mp3");
+  tek = loadSound("rope_cut.mp3");
+  mimi = loadSound("sad.wav");
+  nhenhe = loadSound("eating_sound.mp3");
+  suuu = loadSound("air.wav");
 
   piscando.playing = true;
   comendo.playing = true;
+  triste.playing = true;
 
   comendo.loop = false;
+  triste.loop = false;
 }
 
 function setup() 
 {
   createCanvas(500,700);
+  thau.play();
+  thau.setVolume(0.5);
   engine = Engine.create();
   world = engine.world;
 
@@ -58,16 +75,25 @@ function setup()
   ovc = Bodies.circle(300,300,15);
   Matter.Composite.add(corda.body,ovc);
   chave = new Chave(corda,ovc);
-  coelho = createSprite(250,620,100,100);
+  coelho = createSprite(420,620,100,100);
   coelho.addImage(tobi);
   coelho.scale = 0.2
   coelho.addAnimation("piscando", piscando);
   coelho.addAnimation("comendo", comendo);
+  coelho.addAnimation("chorando", triste);
   coelho.changeAnimation("piscando");
   botal = createImg("cut_btn.png");
   botal.position(220,30);
   botal.size(50,50);
   botal.mouseClicked(cai);
+  balu = createImg("balloon.png");
+  balu.position(10,210);
+  balu.size(150,100);
+  balu.mouseClicked(vento);
+  muty = createImg("mute.png");
+  muty.position(450,20);
+  muty.size(50,50);
+  muty.mouseClicked(mut);
 }
 
 function draw() 
@@ -81,6 +107,13 @@ function draw()
   corda.show();
   if(colid(ovc,coelho)===true){
     coelho.changeAnimation("comendo");
+    nhenhe.play();
+  }
+  if(ovc !==null && ovc.position.y >= 650){
+    coelho.changeAnimation("chorando");
+    ovc = null;
+    thau.stop();
+    mimi.play();
   }
   if(ovc!==null){
   image(chocolate, ovc.position.x,ovc.position.y,60,75);
@@ -93,6 +126,8 @@ function cai(){
   corda.break();
   chave.cortar();
   chave = null;
+  tek.play();
+  
 }
 
 function colid(corpo,Sprite){
@@ -106,4 +141,16 @@ if(corpo!==null){
     return false;
   }
 }
+}
+function vento(){
+  Matter.Body.applyForce(ovc,{x:0,y:0},{x:0.01,y:0});
+  suuu.play();
+
+}
+function mut(){
+  if(thau.isPlaying()){
+    thau.stop();
+  }else{
+    thau.play();
+  }
 }
