@@ -12,8 +12,12 @@ let world;
 
 var piso;
 var corda;
+var corda2;
+var corda3;
 var ovc;
 var chave;
+var chave2;
+var chave3;
 
 var cena;
 var chocolate;
@@ -21,6 +25,9 @@ var tobi;
 var coelho;
 
 var botal;
+var botal2;
+var botal3;
+
 
 var piscando;
 var comendo;
@@ -50,8 +57,8 @@ function preload(){
   comendo.playing = true;
   triste.playing = true;
 
-  comendo.loop = false;
-  triste.loop = false;
+  comendo.looping = false;
+  triste.looping = false;
 }
 
 function setup() 
@@ -71,10 +78,14 @@ function setup()
   textSize(50)
 
   piso = new Piso(200,690,600,20);
-  corda = new Rope(6,{x:245,y:30});
+  corda = new Rope(8,{x:40,y:30});
+  corda2 = new Rope(7,{x:370,y:40});
+  corda3 = new Rope(4,{x:400,y:225});
   ovc = Bodies.circle(300,300,15);
   Matter.Composite.add(corda.body,ovc);
   chave = new Chave(corda,ovc);
+  chave2 = new Chave(corda2,ovc);
+  chave3 = new Chave(corda3,ovc);
   coelho = createSprite(420,620,100,100);
   coelho.addImage(tobi);
   coelho.scale = 0.2
@@ -83,13 +94,21 @@ function setup()
   coelho.addAnimation("chorando", triste);
   coelho.changeAnimation("piscando");
   botal = createImg("cut_btn.png");
-  botal.position(220,30);
+  botal.position(20,30);
   botal.size(50,50);
   botal.mouseClicked(cai);
-  balu = createImg("balloon.png");
-  balu.position(10,210);
-  balu.size(150,100);
-  balu.mouseClicked(vento);
+  botal2 = createImg("cut_btn.png");
+  botal2.position(330,35);
+  botal2.size(50,50);
+  botal2.mouseClicked(cai2);
+  botal3 = createImg("cut_btn.png");
+  botal3.position(360,200);
+  botal3.size(50,50);
+  botal3.mouseClicked(cai3);
+  //balu = createImg("balloon.png");
+  //balu.position(10,210);
+  //balu.size(150,100);
+  //balu.mouseClicked(vento);
   muty = createImg("mute.png");
   muty.position(450,20);
   muty.size(50,50);
@@ -105,6 +124,8 @@ function draw()
 
   piso.exibir();
   corda.show();
+  corda2.show();
+  corda3.show();
   if(colid(ovc,coelho)===true){
     coelho.changeAnimation("comendo");
     nhenhe.play();
@@ -126,6 +147,20 @@ function cai(){
   corda.break();
   chave.cortar();
   chave = null;
+  tek.play();
+  
+}
+function cai2(){
+  corda2.break();
+  chave2.cortar();
+  chave2 = null;
+  tek.play();
+  
+}
+function cai3(){
+  corda3.break();
+  chave3.cortar();
+  chave3 = null;
   tek.play();
   
 }
